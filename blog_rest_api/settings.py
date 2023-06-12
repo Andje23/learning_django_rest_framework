@@ -75,10 +75,21 @@ WSGI_APPLICATION = 'blog_rest_api.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'blog_rest_api',
+        'USER': 'postgres',
+        'PASSWORD': 'Andje23@gmail.com',
+        'HOST': 'localhost',
+        'POST': '5432'
     }
 }
 
