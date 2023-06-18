@@ -8,7 +8,8 @@ class Blog(models.Model):
     name = models.CharField(max_length=100)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.TextField()
-    post_date = models.DateField(max_length=1000, null=True, blank=True)
+    post_date = models.DateField(default=date.today)
+    slug = models.CharField(max_length=1000, null=True, blank=True)
     
     def __str__(self):
         return self.name + " ==> " + str(self.author)
