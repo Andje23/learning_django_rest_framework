@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from blog_app.models import Blog
 
 class BlogSerializer(serializers.Serializer):
     id = serializers.IntegerField(read_only=True)
@@ -8,3 +9,6 @@ class BlogSerializer(serializers.Serializer):
     post_date = serializers.DateField()
     is_public = serializers.BooleanField()
     slug = serializers.CharField()
+    
+    def create(self, validate_data):
+        return Blog.objects.create(**validate_data)
