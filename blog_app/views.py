@@ -1,23 +1,19 @@
-from django.shortcuts import render
-from django.http import JsonResponse
 from .models import Blog
-
-def blog_list(reguest) -> JsonResponse:
-    blogs = Blog.objects.all()
-    
-    data = {
-        "Blogs": list(blogs.values())
-    }
-    
-    return JsonResponse(data)
+from .serializer import BlogSerializer
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 
+
+@api_view(['GET'])
+def blog_list(reguest):
+    all_blogs = Blog.objects.filter(is_public=True)
+    serializer = BlogSerializer(all_blogs, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def blog_detail(request, pk):
-    blogs = Blog.objects.get(pk=pk)
-    
-    data = {
-        'name': blogs.name,
-        'description': blogs.description,
-        'slug': blogs.slug,
-    } 
-    return JsonResponse(data)
+    blog = Blog.objects.get(is_publik=True, pk=pk)
+    serializer = BlogSerializer(blog)
+    return  Response(serializer.data)
