@@ -12,3 +12,13 @@ class BlogSerializer(serializers.Serializer):
     
     def create(self, validate_data):
         return Blog.objects.create(**validate_data)
+    
+    def update(self, instance, validate_data):
+        instance.name = validate_data.get('name', instance.name)
+        instance.author = validate_data.get('author', instance.author)
+        instance.description = validate_data.get('description', instance.description)
+        instance.post_date = validate_data.get('post_date', instance.post_date)
+        instance.is_public = validate_data.get('is_public', instance.is_public)
+        instance.slug = validate_data.get('slug', instance.slug)
+        instance.save()
+        return instance
