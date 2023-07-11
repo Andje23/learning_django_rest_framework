@@ -5,9 +5,9 @@ from blog_app.models import Blog
 class BlogSerializer(serializers.ModelSerializer):
     class Mete:
         model = Blog
-        # fields = "__all__"
+        fields = "__all__"
         # fields = ["name", "description", "is_public", "slug"]
-        exclude = ["post_data"]
+        # exclude = ["post_data"]
 
 
 # class BlogSerializer(serializers.Serializer):
