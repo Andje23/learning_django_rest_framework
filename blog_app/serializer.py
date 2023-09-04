@@ -1,13 +1,40 @@
 from rest_framework import serializers
 from blog_app.models import Blog
 
+def name_valid(value):
+    if len(value) < 4:
+        raise serializers.ValidationError("Название блога слишком короткое")
+    else:
+        return value
+
 
 class BlogSerializer(serializers.ModelSerializer):
+    
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(validators = [name_valid])
+    author = serializers.CharField(validators = [name_valid])
+    description = serializers.CharField()
+    post_date = serializers.DateField(required=False)
+    is_public = serializers.BooleanField()
+    slug = serializers.CharField(required=False)
+    
     class Mete:
         model = Blog
         fields = "__all__"
         # fields = ["name", "description", "is_public", "slug"]
         # exclude = ["post_data"]
+        
+    # def validate_name(self, value):
+    #     if len(value) < 4:
+    #         raise serializers.ValidationError("Название блога слишком короткое")
+    #     else:
+    #         return value
+        
+    def validate(self, data):
+        if data['name'] == data['description']:
+            raise serializers.ValidationError("Название блога и его описание не могут совпвдать")
+        else:
+            return data
 
 
 # class BlogSerializer(serializers.Serializer):
@@ -15,9 +42,9 @@ class BlogSerializer(serializers.ModelSerializer):
 #     name = serializers.CharField()
 #     author = serializers.CharField()
 #     description = serializers.CharField()
-#     post_date = serializers.DateField()
+#     post_date = serializers.DateField(required=False)
 #     is_public = serializers.BooleanField()
-#     slug = serializers.CharField()
+#     slug = serializers.CharField(required=False)
     
 #     def create(self, validate_data):
 #         return Blog.objects.create(**validate_data)
