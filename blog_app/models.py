@@ -4,20 +4,27 @@ from datetime import date
 from django.template.defaultfilters import slugify
 
 
+class Category(models.Model):
+    category_name = models.CharField(max_length=50)
+    
+    def __str__(self):
+        return self.category_name
+
 class Blog(models.Model):
-    name = models.CharField(max_length=100)
+    blog_title = models.CharField(max_length=100)
     author = models.CharField(max_length=100)
-    description = models.TextField()
+    blog_description = models.TextField()
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, related_name="category")
     post_date = models.DateField(default=date.today)
     is_public = models.BooleanField(default=True)
     slug = models.CharField(max_length=1000, null=True, blank=True)
     
     def __str__(self):
-        return self.name + " ==> " + str(self.author)
+        return self.blog_title + " ==> " + str(self.author)
     
     def save(self, *args, **kvargs):
         if not self.slug:
-            self.slug = slugify(self.name + "-" + str(self.post_date))
+            self.slug = slugify(self.blog_title + "-" + str(self.post_date))
         return super().save(*args, **kvargs)
     
 
